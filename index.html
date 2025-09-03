@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tăng Follow TikTok - tangliketiktok.io.vn</title>
+  <meta name="description" content="Dịch vụ demo tăng follow TikTok. Trang mẫu để giới thiệu dịch vụ, bảng giá, đánh giá và liên hệ.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="logo">tangliketiktok.io.vn</a>
+      <nav class="menu">
+        <a href="#features">Tính năng</a>
+        <a href="#pricing">Bảng giá</a>
+        <a href="#reviews">Đánh giá</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact" class="btn btn-sm">Liên hệ</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero container" id="top">
+    <div class="hero-text">
+      <h1>🚀 Tăng Follow TikTok <span class="gradient">Nhanh & An toàn*</span></h1>
+      <p class="sub">Trang demo miễn phí. Form bên dưới chỉ minh hoạ quy trình nhận đơn — chưa kết nối API thật.</p>
+      <form id="order-form" class="card form">
+        <label for="username">Nhập username TikTok</label>
+        <input id="username" name="username" type="text" placeholder="vd: nguyenvana" required>
+        <label for="package">Gói</label>
+        <select id="package" name="package">
+          <option value="100">100 follow</option>
+          <option value="500">500 follow</option>
+          <option value="1000">1000 follow</option>
+        </select>
+        <button type="submit" class="btn">Nhận Follow (demo)</button>
+        <p class="muted small">*Lưu ý: Tự động tăng follow có thể vi phạm Điều khoản TikTok. Dự án này chỉ dùng cho mục đích học tập & demo.</p>
+      </form>
+      <div id="progress" class="hidden card progress">
+        <div class="progress-header">
+          <strong>Đang xử lý đơn...</strong><span id="progress-pct">0%</span>
+        </div>
+        <div class="bar"><div class="bar-inner" id="bar-inner" style="width:0%"></div></div>
+        <p id="progress-text" class="muted">Khởi tạo...</p>
+      </div>
+      <div id="order-result" class="hidden card success">
+        <h3>✅ Tạo đơn demo thành công</h3>
+        <p>Mã đơn: <code id="order-id">-</code></p>
+        <button class="btn btn-ghost" id="check-status">Kiểm tra trạng thái</button>
+      </div>
+    </div>
+    <div class="hero-art">
+      <img src="assets/hero-illustration.svg" alt="TikTok Growth" loading="lazy">
+    </div>
+  </section>
+
+  <section id="features" class="container grid-3 features">
+    <div class="feature card">
+      <h3>Đơn giản</h3>
+      <p>Nhập username → chọn gói → xác nhận là xong. Giao diện tối ưu cho di động.</p>
+    </div>
+    <div class="feature card">
+      <h3>Bảo mật</h3>
+      <p>Không yêu cầu mật khẩu. Sử dụng HTTPS & chính sách bảo mật nghiêm ngặt.</p>
+    </div>
+    <div class="feature card">
+      <h3>Tích hợp</h3>
+      <p>Chuẩn bị endpoints serverless (Netlify Functions) để kết nối API hợp pháp của bên thứ 3.</p>
+    </div>
+  </section>
+
+  <section id="pricing" class="container">
+    <h2 class="center">Bảng giá (demo)</h2>
+    <div class="pricing grid-3">
+      <div class="price card">
+        <h3>Starter</h3>
+        <div class="money">₫49k</div>
+        <ul>
+          <li>100 follow</li>
+          <li>Thời gian: 1–2 ngày</li>
+          <li>Hỗ trợ qua email</li>
+        </ul>
+        <a href="#top" class="btn btn-ghost">Chọn gói</a>
+      </div>
+      <div class="price card highlight">
+        <h3>Pro</h3>
+        <div class="money">₫199k</div>
+        <ul>
+          <li>500 follow</li>
+          <li>Thời gian: vài giờ – 1 ngày</li>
+          <li>Ưu tiên hỗ trợ</li>
+        </ul>
+        <a href="#top" class="btn">Chọn gói</a>
+      </div>
+      <div class="price card">
+        <h3>Max</h3>
+        <div class="money">₫349k</div>
+        <ul>
+          <li>1000 follow</li>
+          <li>Thời gian: vài giờ</li>
+          <li>Bảo hành 7 ngày</li>
+        </ul>
+        <a href="#top" class="btn btn-ghost">Chọn gói</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews" class="container">
+    <h2 class="center">Đánh giá</h2>
+    <div class="grid-3">
+      <blockquote class="card">“Giao diện đẹp, dễ dùng. Triển khai trên Netlify siêu nhanh.”<footer>— Demo user A</footer></blockquote>
+      <blockquote class="card">“Phần Forms lưu lead rất tiện, không cần backend.”<footer>— Demo user B</footer></blockquote>
+      <blockquote class="card">“Serverless endpoint mẫu hoạt động mượt.”<footer>— Dev thử nghiệm</footer></blockquote>
+    </div>
+  </section>
+
+  <section id="faq" class="container">
+    <h2 class="center">Câu hỏi thường gặp</h2>
+    <div class="faq">
+      <details class="card"><summary>Dịch vụ này có vi phạm TikTok không?</summary><p>Việc tăng follow tự động có thể vi phạm Điều khoản TikTok. Đây chỉ là website <strong>demo/học tập</strong>. Nếu triển khai thương mại, bạn cần đảm bảo tuân thủ quy định pháp luật & nền tảng.</p></details>
+      <details class="card"><summary>Form có hoạt động thật không?</summary><p>Form minh hoạ sẽ gọi API serverless <code>/.netlify/functions/create-order</code> nếu có. Nếu chưa bật Functions, trang sẽ chạy chế độ giả lập.</p></details>
+      <details class="card"><summary>Lưu liên hệ ở đâu?</summary><p>Sử dụng <strong>Netlify Forms</strong> (dưới đây) để nhận và quản lý liên hệ ngay trong Netlify Dashboard.</p></details>
+    </div>
+  </section>
+
+  <section id="contact" class="container">
+    <h2 class="center">Liên hệ (Netlify Forms)</h2>
+    <form name="contact" method="POST" data-netlify="true" class="card form">
+      <input type="hidden" name="form-name" value="contact">
+      <label>Họ tên</label>
+      <input name="name" required>
+      <label>Email</label>
+      <input name="email" type="email" required>
+      <label>Nội dung</label>
+      <textarea name="message" rows="4" required></textarea>
+      <button class="btn" type="submit">Gửi</button>
+      <p class="muted small">Sau khi deploy, vào Netlify → Forms để xem submissions.</p>
+    </form>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© 2025 tangliketiktok.io.vn — Demo landing page</span>
+      <a href="#top">Lên đầu trang ↑</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
