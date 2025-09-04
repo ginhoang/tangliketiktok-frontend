@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đặt Follow</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <h2>Đặt dịch vụ Follow</h2>
+
+  <form id="orderForm">
+    <label>Username/Link cần tăng:</label><br>
+    <input type="text" id="username" placeholder="vd: nguyenvana hoặc link đầy đủ" required><br><br>
+
+    <label>Chọn dịch vụ:</label><br>
+    <select id="service">
+      <option value="tiktok-1000">TikTok Follow 1000</option>
+      <option value="tiktok-2000">TikTok Follow 2000</option>
+      <option value="tiktok-5000">TikTok Follow 5000</option>
+      <option value="insta-1000">Instagram Follow 1000</option>
+    </select><br><br>
+
+    <button type="submit">Mua ngay 🚀</button>
+  </form>
+
+  <p id="result" style="margin-top:15px;font-weight:600;"></p>
+
+  <script>
+    document.getElementById("orderForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const serviceOption = document.getElementById("service").value;
+
+      let serviceId, quantity, link;
+      switch (serviceOption) {
+        case "tiktok-1000": serviceId = 9074; quantity = 1000; link = "https://www.tiktok.com/@" + username; break;
+        case "tiktok-2000": serviceId = 9074; quantity = 2000; link = "https://www.tiktok.com/@" + username; break;
+        case "tiktok-5000": serviceId = 9074; quantity = 5000; link = "https://www.tiktok.com/@" + username; break;
+        case "insta-1000":  serviceId = 6450; quantity = 1000; link = "https://www.instagram.com/" + username; break;
+        default: alert("Chọn dịch vụ hợp lệ"); return;
+      }
+
+      document.getElementById("result").innerText = "Đang gửi đơn...";
+
+      try {
+        const res = await fetch("/.netlify/functions/place-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ service: serviceId, username: username, quantity: quantity, link: link })
+        });
+
+        const json = await res.json();
+        if (res.ok && json.order) {
+          document.getElementById("result").innerText = "✅ Đặt hàng thành công. Mã đơn: " + json.order;
+        } else {
+          document.getElementById("result").innerText = "❌ Lỗi: " + (json.error || JSON.stringify(json));
+        }
+      } catch (err) {
+        document.getElementById("result").innerText = "⚠️ Lỗi kết nối: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>

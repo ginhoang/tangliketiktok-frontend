@@ -31,17 +31,14 @@
       <div class="price card">
         <h3>1000 Follow TikTok</h3>
         <div class="money" id="price-tiktok-1000">₫...</div>
-        <ul><li>Service ID: 9074</li><li>Thời gian: vài giờ</li></ul>
       </div>
       <div class="price card">
         <h3>2000 Follow TikTok</h3>
         <div class="money" id="price-tiktok-2000">₫...</div>
-        <ul><li>Service ID: 9074</li><li>Thời gian: vài giờ</li></ul>
       </div>
       <div class="price card">
         <h3>5000 Follow TikTok</h3>
         <div class="money" id="price-tiktok-5000">₫...</div>
-        <ul><li>Service ID: 9074</li><li>Thời gian: vài giờ</li></ul>
       </div>
     </div>
 
@@ -49,17 +46,14 @@
       <div class="price card">
         <h3>1000 Follow Instagram</h3>
         <div class="money" id="price-ig-1000">₫...</div>
-        <ul><li>Service ID: 6450</li><li>Thời gian: vài giờ</li></ul>
       </div>
       <div class="price card">
         <h3>2000 Follow Instagram</h3>
         <div class="money" id="price-ig-2000">₫...</div>
-        <ul><li>Service ID: 6450</li><li>Thời gian: vài giờ</li></ul>
       </div>
       <div class="price card">
         <h3>5000 Follow Instagram</h3>
         <div class="money" id="price-ig-5000">₫...</div>
-        <ul><li>Service ID: 6450</li><li>Thời gian: vài giờ</li></ul>
       </div>
     </div>
   </section>
@@ -119,67 +113,41 @@
     document.getElementById(tab).classList.remove("hidden");
   }
 
-  // Gọi API để lấy giá dịch vụ
+  // ✅ Lấy giá từ Netlify Function
   async function loadPrices() {
     try {
-      const res = await fetch("https://smmprovider.com/api/v2", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-          key: "af6e9fe1e0efc6cdbc3dd43dd2a52497",
-          action: "services"
-        })
-      });
-      const services = await res.json();
+      const res = await fetch("/.netlify/functions/check-order");
+      const prices = await res.json();
 
-      const tiktok = services.find(s => s.service == 9074);
-      const insta  = services.find(s => s.service == 6450);
+      document.getElementById("price-tiktok-1000").textContent = "₫" + prices.tiktok[1000];
+      document.getElementById("price-tiktok-2000").textContent = "₫" + prices.tiktok[2000];
+      document.getElementById("price-tiktok-5000").textContent = "₫" + prices.tiktok[5000];
 
-      if (tiktok) {
-        document.getElementById("price-tiktok-1000").textContent = "₫" + Math.round(tiktok.rate * 10 * 1.013);
-        document.getElementById("price-tiktok-2000").textContent = "₫" + Math.round(tiktok.rate * 20 * 1.013);
-        document.getElementById("price-tiktok-5000").textContent = "₫" + Math.round(tiktok.rate * 50 * 1.013);
-      }
-
-      if (insta) {
-        document.getElementById("price-ig-1000").textContent = "₫" + Math.round(insta.rate * 10 * 1.013);
-        document.getElementById("price-ig-2000").textContent = "₫" + Math.round(insta.rate * 20 * 1.013);
-        document.getElementById("price-ig-5000").textContent = "₫" + Math.round(insta.rate * 50 * 1.013);
-      }
-
+      document.getElementById("price-ig-1000").textContent = "₫" + prices.instagram[1000];
+      document.getElementById("price-ig-2000").textContent = "₫" + prices.instagram[2000];
+      document.getElementById("price-ig-5000").textContent = "₫" + prices.instagram[5000];
     } catch (err) {
       console.error("Không lấy được giá:", err);
     }
   }
-
   loadPrices();
 
-  // Xử lý đặt đơn
+  // ✅ Đặt hàng qua Netlify Function
   document.getElementById("order-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const platform = document.getElementById("platform").value;
     const username = document.getElementById("username").value.trim();
     const qty = document.getElementById("package").value;
 
-    const serviceId = platform === "tiktok" ? 9074 : 6450;
-
     try {
-      const res = await fetch("https://smmprovider.com/api/v2", {
+      const res = await fetch("/.netlify/functions/place-order", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-          key: "af6e9fe1e0efc6cdbc3dd43dd2a52497",
-          action: "add",
-          service: serviceId,
-          link: platform === "tiktok" ? "https://www.tiktok.com/@" + username : "https://www.instagram.com/" + username,
-          quantity: qty
-        })
+        body: JSON.stringify({ platform, username, qty })
       });
-
       const data = await res.json();
       document.getElementById("order-id").textContent = data.order || "Không có mã đơn";
       document.getElementById("order-result").classList.remove("hidden");
-
     } catch (err) {
       alert("Lỗi khi tạo đơn: " + err.message);
     }

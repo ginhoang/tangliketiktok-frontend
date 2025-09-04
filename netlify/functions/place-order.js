@@ -1,36 +1,34 @@
+// netlify/functions/place-order.js
 import fetch from "node-fetch";
 
 export async function handler(event) {
   try {
-    const body = JSON.parse(event.body);
-    const { username, quantity } = body;
+    const { platform, username, qty } = JSON.parse(event.body);
 
-    const apiKey = process.env.SMM_API_KEY; 
-    const serviceId = process.env.SMM_SERVICE_ID; 
+    const serviceId = platform === "tiktok" ? 9074 : 6450;
+    const link =
+      platform === "tiktok"
+        ? `https://www.tiktok.com/@${username}`
+        : `https://www.instagram.com/${username}`;
 
-    // Gọi API SmmProvider
-    const response = await fetch("https://smmprovider.co/api/v2", {
+    const response = await fetch("https://smmprovider.com/api/v2", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        key: apiKey,
+        key: process.env.SMM_API_KEY,
         action: "add",
         service: serviceId,
-        link: `https://www.tiktok.com/@${username}`,
-        quantity: quantity
-      })
+        link,
+        quantity: qty,
+      }),
     });
 
     const data = await response.json();
-
     return {
       statusCode: 200,
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     };
   } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: err.message })
-    };
+    return { statusCode: 500, body: "Error: " + err.message };
   }
 }
